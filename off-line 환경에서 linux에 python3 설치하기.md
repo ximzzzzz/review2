@@ -26,3 +26,11 @@
    yum install yumdownloader
    yumdownloader gcc 
    ```
+
+
+6. python3와 python2를 동시에 가지고 있는경우, pip3를 통해 python3 라이브러리가 다운가능하다
+
+
+7. 파이썬 3.6이상의 버전의 경우, venv가 기본으로 설치되어 있기 때문에 
+
+   따로 virtualenv를 pip로설치하지 않아도 된다
