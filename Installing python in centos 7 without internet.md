@@ -1,8 +1,8 @@
- Installing python in centos 7 
+# Installing python in centos 7 
 
 # without internet
 
-##### python version : 2.6.7
+##### python version : 3.6.7
 
 
 
