@@ -1,4 +1,4 @@
-# Installing python in centos 7 
+Installing python in centos 7 
 
 # without internet
 
@@ -32,7 +32,9 @@
 
 ​		https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
 
-​	  ![img](file:///C:\Users\ximzz\AppData\Local\Temp\Hnc\BinData\EMB000030b478e6.png)
+​	  ![img](https://user-images.githubusercontent.com/44566113/50758967-09841400-12a7-11e9-9357-5fd84a44a7ea.png)
+
+
 
 
 
@@ -40,7 +42,9 @@
 
 
 
-  <img src="file://C:/Users/ximzz/AppData/Local/Temp/Hnc/BinData/EMB000030b478f4.png" width="500">
+​			     <img src="https://user-images.githubusercontent.com/44566113/50758968-0a1caa80-12a7-11e9-94c8-9ae552353349.png" width="500">		
+
+
 
 
 
@@ -50,7 +54,9 @@
 
 
 
-#### <img src="C:\Users\ximzz\AppData\Roaming\Typora\typora-user-images\1546617791339.png" width="500">
+<img src="https://user-images.githubusercontent.com/44566113/50758969-0a1caa80-12a7-11e9-9862-da52e0298a55.png" width="500">
+
+
 
 
 
@@ -58,7 +64,9 @@
 
 
 
-# <img src="C:\Users\ximzz\AppData\Roaming\Typora\typora-user-images\1546617998671.png" width="500">
+<img src="https://user-images.githubusercontent.com/44566113/50758970-0a1caa80-12a7-11e9-9365-bae5e1fcb79e.png" width="500">
+
+
 
 
 
@@ -68,17 +76,17 @@
 
 ​	1) go to Anaconda homepage, click Linux in the middle, and download 3.7 version
 
-  ![img](file:///C:\Users\ximzz\AppData\Local\Temp\Hnc\BinData\EMB000030b478f9.png)
+![img](https://user-images.githubusercontent.com/44566113/50758972-0ab54100-12a7-11e9-82a8-1d158808e1b4.png)
+
+
+
+
 
 
 
 ​	2)   send server anaconda file by pscp
 
 ​		-	run command
-
-###   <img src="file:///C:\Users\ximzz\AppData\Local\Temp\Hnc\BinData\EMB000030b478fe.png" width="400">
-
-
 
 ​		-	enter code 
 
