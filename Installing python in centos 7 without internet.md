@@ -1,6 +1,6 @@
-Installing python in centos 7 
+# Installing python in centos 7 
 
-# without internet
+# without internet for Data science
 
 ##### python version : 3.6.7
 
@@ -90,7 +90,11 @@ Installing python in centos 7
 
 ​		-	enter code 
 
-​	 'pscp -P <port> <path to anaconda> <<host@serverIPaddress:Targetpath>>
+```bash
+pscp -P <port> <path to anaconda> <host@serverIPaddress:Targetpath>
+```
+
+
 
 ​	(in my opinion, /home/<user>/ is convenient for Target path)
 
@@ -158,11 +162,85 @@ Installing python in centos 7
 
 ### 3. Create virtual environment
 
-​	1) enter create command
-
-​	'conda create -n <virtual env> python==3.6.7'
-
-<img src="https://user-images.githubusercontent.com/44566113/50758982-0c7f0480-12a7-11e9-86db-1209a301a327.png" width='850'>
+​	1) create virtual environment by enter command below
 
 
 
+```bash
+conda create -n <virtual env> python==3.6.7
+```
+
+
+
+<img src="https://user-images.githubusercontent.com/44566113/50758982-0c7f0480-12a7-11e9-86db-1209a301a327.png" width='850'>					
+
+
+
+​	2) activate virtual envirionment 
+
+```bash
+conda activate <virtual env>
+```
+
+​	you can see head point is changed to virtual env
+
+<img src='https://user-images.githubusercontent.com/44566113/50758983-0c7f0480-12a7-11e9-8a49-725a6b61f8c4.png' width='800'>
+
+
+
+
+
+### 4. Install python major package
+
+
+
+​	1) in this case, assume we can use internet from other computer.
+
+​	so download major packages for DataScience and then move to server
+
+​	
+
+ * ##### if don't want to follow this procedure manually, you can also download at once on
+
+
+​	2) first of all, download package file including dependencies with command below 
+
+​	from other computer(require installing anaconda)
+
+```bash
+conda install <package name> --download-only 
+```
+
+​	
+
+​	3) you should check downloaded files in `anaconda3/pkgs/`, and copy to 
+
+​	new folder `pkgs_down`
+
+​	don't forget to copy dependencies as well
+
+​	(don't recommend to copy `pkgs`at once, due to dependency problem)
+
+
+
+​	4) after download major packages, move to server through `pscp` command
+
+```bash
+pscp -P <PORT> <./pkgs_down/*> <host@serverIPaddress>:<./anaconda3/pkgs/> 
+```
+
+
+
+​	5) check out moved files in server correctly, and install packages offline on server
+
+```bash
+conda install --offline <package>
+```
+
+<img src='https://user-images.githubusercontent.com/44566113/50758986-0d179b00-12a7-11e9-8526-36a6b522df04.png' >
+
+
+
+
+
+### 5. jupyter notebook remote setting
