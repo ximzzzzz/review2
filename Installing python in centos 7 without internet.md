@@ -157,3 +157,12 @@ Installing python in centos 7
 
 
 ### 3. Create virtual environment
+
+​	1) enter create command
+
+​	'conda create -n <virtual env> python==3.6.7'
+
+<img src="https://user-images.githubusercontent.com/44566113/50758982-0c7f0480-12a7-11e9-86db-1209a301a327.png" width='850'>
+
+
+
