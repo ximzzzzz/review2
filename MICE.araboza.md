@@ -60,7 +60,7 @@ MNAR
 
 ​		자료의 형태가 monotone일땐 모수적 모형으로 regression method, 
 
-​		비모수적 모형으로는 propensity 등..
+​		비모수적 모형으로는 propensity 등
 
 ​		
 
