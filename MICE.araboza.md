@@ -46,6 +46,8 @@ MNAR
 
 단순대치법(Single Imputation)
 
+
+
 다중대치법(Multiple Imputation)
 
 ​	단순대치법에서 표준오차가 과소추정되는 점, 계산의 난해함의 문제를 보완하고자 개발
@@ -60,7 +62,7 @@ MNAR
 
 ​		자료의 형태가 monotone일땐 모수적 모형으로 regression method, 
 
-​		비모수적 모형으로는 propensity 등
+​		비모수적 모형으로는 propensity 등 자료별로 다른 
 
 ​		
 
@@ -72,7 +74,7 @@ MNAR
 
 ​	분석단계(Analysis step)
 
-​		: 대치값을 분석하여 각 m개의 데이터셋에서의 세타를 추출한다.
+​		: 대치값을 분석하여 각 m개의 데이터셋에서의 세타를 추출한다. 모수의 추정
 
 
 
