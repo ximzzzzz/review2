@@ -56,27 +56,51 @@
 
 ##### 	다중대치법(Multiple Imputation)
 
-​		단순대치법에서 표준오차가 과소추정되는 점, 계산의 난해함의 문제를 보완하고자 개발
-
-​		단순대치법을 한 번 하지 않고 m번 반복하여 m개의 가상의 자료를 만들어 분석하는 방법
 
 
+​	단순대치법에서 표준오차가 과소추정되는 점, 계산의 난해함의 문제를 보완하고자 개발
 
-​		i) 대치단계(imputation step)
+​	단순대치법을 한 번 하지 않고 m번 반복하여 m개의 가상의 자료를 만들어 분석하는 방법
 
-​		-  mar가정
 
-​		- 자료의 형태가 monotone일땐 모수적 모형으로 regression method, 
 
-​		   비모수적 모형으로는 propensity 등 자료별로 다른 알고리즘을 적용한다	​	
+​	i) 대치단계(imputation step)
 
-​		- non-monotone 자료일때는 일반적으로 MCMC(Markov Chain Monte Carlo) 사용
+​		-  MAR 가정
 
-​		   m이 많을 수록 좋지만 분석에 시간이 많이 소요되기때문에 일반적으로 3,5가 충분
+​		- 가능한 대체 값의 분포에서 추출된 서로 다른값으로 결측치를 처리한 복수의 데이터 셋을 생성
+
+​		- 채워넣기 단계 : 모든 변수의 결측치를 변수의 순서대로 채운다. 앞서 채워진 변수가 다음 채워지는
+
+​			변수의 독립변수로 활용되는 방식
+
+​		- 대체단계 : 앞서 채워진 값들을 변수의 순서대로 대체하는 과정. 
+
+​			대체된 데이터셋에서 결측치가 독립적인 추출이 될 때까지 시행한다.
+
+​	<img src='https://user-images.githubusercontent.com/44566113/51376507-d9acfa00-1b4b-11e9-9de9-638e85b4b7c5.PNG'>
 
 ​		
 
-​		ii) 분석단계(Analysis step)
+​		- 대치 방법   
+
+​			- 연속형 데이터 : PMM (Predictive Mean Matching)
+
+​			- 이변량 데이터 : Logistic Regression
+
+​			- 다변량 데이터 : Bayesian polytomous Regression     
+
+​			- 순서형 데이터 : Proportional odds model 
+
+​			- non-monotone 데이터 :  MCMC(Markov Chain Monte Carlo) , 대체모형에 대한 분포가정을 한다
+
+​			
+
+​		-  m이 많을 수록 좋지만 분석에 시간이 많이 소요되기때문에 일반적으로 3,5가 충분
+
+​	
+
+​	ii) 분석단계(Analysis step)
 
 ​		- 대치값을 분석하여 각 m개의 데이터셋에서의 세타를 추출한다. 
 
@@ -96,6 +120,12 @@
 
 ​		iii) 결합단계(Combination step)
 
-​		- 세타의 평균값을 구하여 최종 대체값을 넣는다.
+​		- 추정치의 평균값을 구하여 최종 대체값을 넣는다.
 
 ​	
+
+
+
+
+
+참고. 설문자료의 결측치 처리방법에 대한 연구 : 다중대체법과재조사법을 중심으로 (고길곤, 탁현우)
