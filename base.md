@@ -16,11 +16,10 @@
 
    MLE 구하는 식 : 여러개의 독립적으로 관측된 y 의 각각의 likelihood의 곱으로 표현한다.
 
-   
+
    $$
    {\mathcal {L}}(\theta |x)=P_{\theta }(X=x)=P_{1,\theta }(X_{1}=x_{1})P_{2,\theta }(X_{2}=x_{2})\cdots P_{n,\theta }(X_{n}=x_{n})
    $$
-   
 
 3. 사전확률  / 사후 확률
 
@@ -29,6 +28,13 @@
 4. 베이즈정리 : 사전확률을 알고 있을때, 사건 발생후에 그 확률이 수정되거나 변할 수 있다
 
    
+
+
+
+
+
+5. rolling window
+6. np.memmap
 
 
 
