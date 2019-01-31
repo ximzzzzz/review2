@@ -20,6 +20,11 @@
    $$
    {\mathcal {L}}(\theta |x)=P_{\theta }(X=x)=P_{1,\theta }(X_{1}=x_{1})P_{2,\theta }(X_{2}=x_{2})\cdots P_{n,\theta }(X_{n}=x_{n})
    $$
+<<<<<<< HEAD
+=======
+
+   
+>>>>>>> 02e4f455c1b16678e98aef26b4965dd283c31bba
 
 3. 사전확률  / 사후 확률
 
