@@ -65,3 +65,21 @@ plt.savefig('img_dir', format = 'png', dpi = dpi )
 폰트크기나 선굵기 등의 차이로인해 미묘하게 차이가 생긴다. 이유는 정확하게 모르지만
 
 아마 고정 사이즈로 resize되면서 폰트나 선도 함께 resize 되기때문에 변형이 생기는 것 같다.
+
+
+
+##### -> 오늘 해결방법을 알게됨. 미묘한 변화도 거슬릴 경우 `fig.tight_layout()`을 써줘면 된다.
+
+```python
+fig = plt.figure(frameon=False, dpi=dpi, figsize =((float(w)/dpi) ,(float(h)/dpi)));
+fig.tight_laytout()
+```
+
+
+
+원래 tight_layout()은 도표간에 폰트가 겹치거나 title과 subtitle이 겹치는 등 여러개의 도표가 겹치지않도록
+
+간격을 맞춰주는 메소드인데, 어떤 이유로 위와같은 기능을 하는지는 모르겠다. **하지만 시도한 것 중 유일하게**
+
+**다른 환경(다른 모니터 뿐 만아니라 다른 PC)에서도 동일한 사이즈와 도표를 만들었다.**
+
