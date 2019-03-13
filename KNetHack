@@ -1,0 +1,171 @@
+
+Repositories0
+Code5K+
+Commits5
+Issues87
+Marketplace0
+Topics0
+Wikis10
+Users0
+Language
+
+Sort
+
+5,293 code results
+@dkreda
+dkreda/MyPython – pxe_boot.py
+Showing the top six matches
+Last indexed on Jun 28, 2018
+Python
+    TimeOut=datetime.timedelta(seconds=TimeOut.seconds + 30)
+    IP=Blade['mgmt_ip']
+    ConnState = CheckConnection(IP)
+    ## Verify offline or wait period time
+    print "Debug - Verify offline at Blade %s (slot %s) Connection State is %s" % (IP,Blade['chassis_slot_number'],ConnState)
+@hunter199129
+hunter199129/blog – index.html
+Showing the top three matches
+Last indexed on Dec 11, 2018
+HTML
+  <meta charset="utf-8">
+  
+  <title>Anaconda environment commands memo - Nobody Could&#39;ve Know What You&#39;re Thinking</title>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is a memo for anaconda env setting commands</p>
+<a id="more"></a>
+<h2 id="Create-env-offline"><a href="#Create-env-offline" class="headerlink" title="Create env offline"></a>Create env offline</h2><p>Installed packages python, pip, pandas</p>
+@remigius42
+remigius42/xgboost_explainability – playbook_customize.yml
+Showing the top two matches
+Last indexed on Jul 11, 2018
+YAML
+  vars:
+    anaconda_bin_path: /usr/local/anaconda/bin
+  tasks:
+    - name: Generate Jupyter config
+      command: '{{ anaconda_bin_path }}/jupyter notebook --generate-config'
+      args:
+        creates: /home/ubuntu/.jupyter/jupyter_notebook_config.py
+@waterponey
+waterponey/clusterboot – all
+Showing the top two matches
+Last indexed on Jul 2, 2018
+# REQUIRED PARAMETERS !!!!
+#
+################################################################################
+# Do you have internet access on your cluster ?
+is_offline: false
+
+# This should stay as false. Will Format HDFS otherwise
+# Are you using an account that needs to sudo ?
+ansible_become: yes
+
+# The IP Adress for your DNS server (usually in /etc/resolv.conf)
+# Vagrant's default is 10.0.2.3
+@arohigupta
+arohigupta/unix – .bash_history
+Showing the top six matches
+Last indexed on Jul 4, 2018
+Shell
+ls 
+VBoxGuestAdditions_4.3.14.iso
+cd anaconda-ks.cfg 
+cd /anaconda-ks.cfg 
+cat lol
+cat anaconda-ks.cfg 
+less anaconda-ks.cfg 
+cat anaconda-ks.cfg 
+less anaconda-ks.cfg 
+which grep
+grep
+grep --help
+ls bin
+@ansatz
+ansatz/ansatz.github.io – 2015-03-30-dotfiles.md
+Showing the top two matches
+Last indexed on Jun 29, 2018
+Markdown
+# .vimrc
+- bundles
+	- pathogen
+	- vim-ipython
+	- offline-docs 
+	- nerdtree
+	- <F3>
+	- zeal
+- paths
+	- diff files, folders, checkhash of download/install
+	- dashboard [todo, weather, log]
+	- network [ip, printer]
+	- a timer
+@SmartInfrastructures
+SmartInfrastructures/itbox-web – settings.yaml
+Showing the top match
+Last indexed on Jun 27, 2018
+YAML
+  last: "10.20.0.254"
+
+# Check timeouts for offline-online nodes detection
+KEEPALIVE:
+  interval: 30  # How often to check if node went offline. If node powered on, it is immediately switched to online state.
+@AlexeyKasatkin
+AlexeyKasatkin/fuel-check – settings.yaml
+Showing the top match
+Last indexed on Jun 27, 2018
+YAML
+  last: "10.20.0.254"
+
+# Check timeouts for offline-online nodes detection
+KEEPALIVE:
+  interval: 30  # How often to check if node went offline. If node powered on, it is immediately switched to online state.
+@ximzzzzz
+ximzzzzz/review2 – Installing python in centos 7 without internet.md
+Showing the top two matches
+Last indexed on Jan 8
+Markdown
+​			     <img src="https://user-images.githubusercontent.com/44566113/50758968-0a1caa80-12a7-11e9-94c8-9ae552353349.png" width="500">		
+
+
+
+
+
+ 
+
+​	3) run putty and enter SERVER IP ADDRESS, PORT
+<img src="https://user-images.githubusercontent.com/44566113/50758970-0a1caa80-12a7-11e9-9365-bae5e1fcb79e.png" width="500">
+
+
+
+
+
+### 2. install Anaconda3
+
+
+
+​	1) go to Anaconda homepage, click Linux in the middle, and download 3.7 version
+@ansatz
+ansatz/ansatz.github.io – dotfiles.html
+Showing the top two matches
+Last indexed on Jun 29, 2018
+HTML
+  <meta name="description" content=".vimrc  bundles          pathogen      vim-ipython      offline-docs       nerdtree                          zeal        paths          runtimepath            ">
+      <li>offline-docs </li>
+      <li>nerdtree</li>
+      <li>
+        <f3>
+</f3>
+      </li>
+      <li>zeal</li>
+© 2019 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
