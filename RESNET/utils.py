@@ -3,12 +3,16 @@ import tensorflow.contrib.slim as slim
 import os
 import numpy as np
 import random
-from scipy import misc
 
-def check_foler(log_dir):
+
+def check_folder(log_dir):
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
     return log_dir
+
+def show_all_variables():
+    model_vars = tf.trainable_variables()
+    slim.model_analyzer.analyze_vars(model_vars, print_info=True)
 
 def str2bool(x):
     return x.lower() in ('true')
@@ -47,9 +51,9 @@ def _random_flip_leftright(batch):
     return batch
 
 
-def data_augmentation(batch, img_size):
+def data_augmentation(batch, h_img_size, w_img_size):
 
     batch = _random_flip_leftright(batch)
-    batch = _random_crop(batch=batch, crop_shape = [img_size, img_size], padding=4)
+    batch = _random_crop(batch=batch, crop_shape = [h_img_size, w_img_size], padding=4)
 
     return batch

@@ -1,9 +1,8 @@
 import tensorflow as tf
-import tensorflow.conrib as tf_contrib
-from patsy.state import center
-from tensorflow.python.training import learning_rate_decay
+import tensorflow.contrib as tf_contrib
 
-weight_init = tf_contrib.layers.variance_scailing_initializer()
+
+weight_init = tf_contrib.layers.variance_scaling_initializer()
 weight_regularizaer = tf_contrib.layers.l2_regularizer(0.0001)
 
 #layer
@@ -55,7 +54,7 @@ def bottle_resblock(x_init, channels, is_training=True, use_bias=True, downsampl
             shortcut = conv(shortcut, channels*4, kernel=1, stride=2, use_bias=use_bias, scope = 'conv_init')
 
         else :
-            x = batch_norm(x, is_training, scope = 'conv_0')
+            x = conv(x, channels, kernel=3, stride=1, use_bias=use_bias, scope='conv_0')
             shortcut = conv(shortcut, channels *4, kernel=1, stride=1, use_bias=use_bias, scope='conv_init')
 
         x = batch_norm(x, is_training, scope = 'batch_norm_1x1_back')
@@ -90,7 +89,7 @@ def get_residual_layer(res_n):
 #normalization function
 
 def batch_norm(x, is_training=True, scope='batch_norm'):
-    return tf_contrib.layers.batch_norm(x, learning_rate_decay=0.9, epsilon=1e-5, center=True, scale=True,
+    return tf_contrib.layers.batch_norm(x, decay=0.9, epsilon=1e-5, center=True, scale=True,
                                         updates_collections = None, is_training=is_training, scope = scope)
 
 
