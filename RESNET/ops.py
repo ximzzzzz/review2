@@ -90,7 +90,7 @@ def get_residual_layer(res_n):
 
 def batch_norm(x, is_training=True, scope='batch_norm'):
     return tf_contrib.layers.batch_norm(x, decay=0.9, epsilon=1e-5, center=True, scale=True,
-                                        updates_collections = None, is_training=is_training, scope = scope)
+                                         is_training=is_training, scope = scope)
 
 
 #sampling

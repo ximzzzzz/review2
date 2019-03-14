@@ -6,10 +6,10 @@ from sklearn.model_selection import train_test_split
 
 class Resnet(object):
     def __init__(self, sess, args):
-        self.model_name = 'Resnet'
+        self.model_name = args.name
         self.sess = sess
         self.checkpoint_dir = args.checkpoint_dir
-        self.dataset_dir = args.dataset_dir
+        self.dataset_dir = args.image_dir
         self.label_dir = args.label_dir
         self.dataset = np.load(self.dataset_dir)
         self.label = np.load(self.label_dir)
@@ -28,7 +28,7 @@ class Resnet(object):
 
 
 
-#construction
+    #CONSTRUCTION
 
     def network(self, x, is_training=True, reuse=False):
         with tf.variable_scope('network', reuse=reuse):
@@ -41,34 +41,33 @@ class Resnet(object):
 
             residual_list = get_residual_layer(self.res_n)
 
-            #############First phase###############################
+            #First phase
             ch =64
             x = conv(x, channels=ch, kernel=3, stride=1, scope='conv')
 
             for i in range(residual_list[0]):
                 x = residual_block(x, channels=ch, is_training=is_training, downsample=False, scope='Firstphase_'+str(i))
 
-            ###############Second phase#############################
+            #Second phase
 
             x = residual_block(x, channels = ch*2, is_training=is_training, downsample= True, scope = 'Secondphase_0')
 
             for i in range(1, residual_list[1]):
                 x = residual_block(x, channels=ch*2, is_training=is_training, downsample=False, scope = 'Secondphase_'+str(i))
 
-            ###############Third_phase##############################
+            #Third_phase
 
             x = residual_block(x, channels=ch*4, is_training=is_training, downsample=True, scope = 'Thirdphase_0')
 
             for i in range(1, residual_list[2]):
                 x = residual_block(x, channels=ch*4, is_training=is_training, downsample=False , scope = 'Thirphase_'+str(i))
 
-            ##############Fourth_phase################################
+            #Fourth_phase
 
             x = residual_block(x, channels=ch*8, is_training=is_training, downsample=True, scope = 'Fourthphase_0')
 
             for i in range(1, residual_list[3]):
                 x = residual_block(x, channels=ch*8 , is_training=is_training, downsample=False, scope='Fourthphase_'+str(i))
-
 
             x = batch_norm(x, is_training=is_training, scope = 'batch_norm')
             x = relu(x)
@@ -82,8 +81,8 @@ class Resnet(object):
 
     #Model
 
-    def build_model(self):
-        self.train_inputs = tf.placeholder(tf.float32, [self.batch_size, self.h_img_size, self.w_img_size, self.c_dim], name = 'train_inputs')
+    def build_model(self): #Height size = h_img_size , Width size = w_img_size , Color dimension = c_dim
+        self.train_inputs = tf.placeholder(tf.float32, [self.batch_size, self.h_img_size, self.w_img_size, self.c_dim], name='train_inputs')
         self.train_labels = tf.placeholder(tf.float32, [self.batch_size, self.label_dim], name = 'train_labels')
 
         self.test_inputs = tf.placeholder(tf.float32, [None, self.h_img_size, self.w_img_size, self.c_dim], name = 'test_inputs')
@@ -100,7 +99,9 @@ class Resnet(object):
 
 
         ##training
-        self.optimizer = tf.train.MomentumOptimizer(self.lr, momentum=0.9).minimize(self.train_loss)
+        update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
+        with tf.control_dependencies(update_ops):
+            self.optimizer = tf.train.MomentumOptimizer(self.lr, momentum=0.9).minimize(self.train_loss)
 
         ##summary
         self.summary_train_loss = tf.summary.scalar('train_loss', self.train_loss)
@@ -130,9 +131,9 @@ class Resnet(object):
             start_batch_id = checkpoint_counter - start_epoch * self.iteration
             counter = checkpoint_counter
 
-            if start_epoch >= int(self.epoch *0.75):
+            if start_epoch > int(self.epoch *0.75):
                 epoch_lr = epoch_lr * 0.01
-            elif start_epoch >= int(self.epoch *0.5) and start_epoch < int(self.epoch *0.75):
+            elif start_epoch > int(self.epoch *0.5) and start_epoch < int(self.epoch *0.75):
                 epoch_lr = epoch_lr *0.1
             print('Load success')
 
@@ -141,7 +142,7 @@ class Resnet(object):
             start_epoch = 0
             start_batch_id = 0
             counter =1
-            print('load failed')
+            print('Load failed')
 
         start_time = time.time()
         for epoch in range(start_epoch, self.epoch):
@@ -162,11 +163,11 @@ class Resnet(object):
                 test_feed_dict = {self.test_inputs : batch_x_test, self.test_labels : batch_y_test}
 
 
-                #update network
+                #Update network
                 _, summary_str, train_loss, train_accuracy = self.sess.run([self.optimizer, self.train_summary, self.train_loss, self.train_accuracy],
                                                                            feed_dict=train_feed_dict)
 
-                #test
+                #Test
                 summary_str, test_loss, test_accuracy = self.sess.run([self.test_summary, self.test_loss, self.test_accuracy],
                                                                       feed_dict=test_feed_dict)
                 self.writer.add_summary(summary_str, counter)
@@ -210,6 +211,7 @@ class Resnet(object):
             print('Failed to find a checkpoint')
             return False, 0
 
+
     def test(self):
         tf.global_variables_initializer().run()
 
@@ -221,7 +223,8 @@ class Resnet(object):
 
         else:
             print('Load failed')
+
         rand_idx = np.random.randint(low=0, high=len(self.test_x), size=self.batch_size)
         test_feed_dict ={self.test_inputs : self.test_x[rand_idx], self.test_labels : self.test_y[rand_idx]}
         test_accuracy = self.sess.run(self.test_accuracy, feed_dict=test_feed_dict)
-        print('Test_accuracy :'.format(test_accuracy))
+        print('Test_accuracy :{}'.format(test_accuracy))
