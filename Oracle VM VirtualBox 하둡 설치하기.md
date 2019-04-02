@@ -34,7 +34,11 @@ os : CENTOS 7 (MINIMAL VERSION)
 
    
 
-3. 게스트확장설치가 안된다(마우스가 없다)
+3. 게스트확장설치가 안된다(마우스가 없다) 
+
+   #### ***minimal 설치, gui환경이 아닐경우 마우스포인터가 없습니다.
+
+   #### 강제로 만들어도 bash shell은 클립보드가 없기때문에 복붙이 불가합니다 
 
    wget 으로 자바랑 다 설치해야되는데 다운로드링크를 붙여넣기 할 수가 없다
 
@@ -54,7 +58,7 @@ os : CENTOS 7 (MINIMAL VERSION)
 
    ​	` VBoxGuestAdditions_<버전>.iso` 파일 다운로드
 
-   5) virtualBox 관리자에서 설정-저장소-컨트롤러:IDE -> iso파일추가
+   5) virtualBox 관리자에서 해당 버추얼머신 우클릭- 설정-저장소-컨트롤러:IDE -> iso파일추가
 
    
 
@@ -93,6 +97,8 @@ os : CENTOS 7 (MINIMAL VERSION)
    EndSection
    
    ```
+
+   
 
    여기까지하면 되야 한다 인간적으로
 
