@@ -58,13 +58,13 @@ sshd:ALL:allow
 
 ```bash
 #재부팅시에도 방화벽끄기
-$ systemctl stop firewalled
+$ systemctl stop firewalld
 
 #or
-$ systemctl mask firewalled
+$ systemctl mask firewalld
 
 #or
-$ systemctl disable firewalled
+$ systemctl disable firewalld
 ```
 
 
@@ -86,6 +86,16 @@ $ vi /etc/ssh/ssh_config
 #
 Port 22
 Port 1234 #원하는 포트 추가 개방 가능
+```
+
+
+
+## 4.SELinux 끄기
+
+
+
+```bash
+sudo setenforce 0 
 ```
 
 
