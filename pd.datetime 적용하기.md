@@ -56,3 +56,30 @@ plt.grid(True,axis= 'y' );
 
 
 
+### 4. 시간만 떼서 확인하고싶다면
+
+
+
+```python
+data['신호수신시간'].astype('datetime64').apply(lambda x : x.time())
+```
+
+
+
+
+
+### 5. datetime 형태에서 int/str로 되돌리고 싶다면
+
+
+
+```python
+from datetime import datetime
+datetime.strftime(데이트타임형태의 시간데이터, '%H%M%S')
+
+data['datetime_column'].apply(lambda x : datetime.strftime(x, '%Y'))
+```
+
+```python
+
+```
+
