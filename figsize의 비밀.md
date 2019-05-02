@@ -72,7 +72,7 @@ plt.savefig('img_dir', format = 'png', dpi = dpi )
 
 ```python
 fig = plt.figure(frameon=False, dpi=dpi, figsize =((float(w)/dpi) ,(float(h)/dpi)));
-fig.tight_laytout()
+fig.tight_layout()
 ```
 
 
