@@ -126,6 +126,14 @@ docker run ufoym/deepo:all-jupyter
 
 
 
+### 8. gpu 사용(optional)
+
+##### - 위의 텐서플로우가 설치된 도커를 통해 gpu를 사용하고자 하는 경우,  nvidia docker를 추가로 설치해야한다
+
+##### 	자세한 내용은 <https://github.com/NVIDIA/nvidia-docker> 참고!
+
+
+
 ### 8.customization (optional)
 
 ##### - 위 이미지는 텐서플로우2 버전이 설치되어있기 때문에 1버전으로 변환하여 사용했다(1도 아직 미숙한데;;)
