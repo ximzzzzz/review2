@@ -1,4 +1,8 @@
-# pd.datetime 으로 시각화 하기!
+# datetime 활용하기!
+
+
+
+## pd.datetime , datetime64 형태를 활용한 데이터 처리 방법
 
 
 
@@ -61,7 +65,13 @@ plt.grid(True,axis= 'y' );
 
 
 ```python
-data['신호수신시간'].astype('datetime64').apply(lambda x : x.time())
+#data['신호수신시간']이 format = '%Y%m%d%H%M%S'형식의 데이터라고 할때 (ex'2019-05-15 12:22:29')
+
+data['신호수신시간'].astype('datetime64').apply(lambda x : x.time()) #시간만 리턴한다.
+#마찬가지로
+data['신호수신시간'][4].month #월
+data['신호수신시간'][4].minute #분
+data['신호수신시간'][4].second #월 등 모두 가능하다
 ```
 
 
