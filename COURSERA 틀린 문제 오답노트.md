@@ -76,3 +76,19 @@ $$
 
 
 ###### A:  1,2
+
+
+
+
+
+
+
+
+
+##### Q: Suppose you are using YOLO on a 19x19 grid, on a detection problem with 20 classes, and with 5 anchor boxes. During training, for each image you will need to construct an output volume y*y* as the target value for the neural network; this corresponds to the last layer of the neural network. (y*y* may include some “?”, or “don’t cares”). What is the dimension of this output volume?
+
+
+
+
+
+###### A: 19 * 19 * ?
