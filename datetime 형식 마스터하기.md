@@ -49,10 +49,29 @@ df['해당시간변수'] = df['해당시간변수'].apply(lambda x : pd.to_datet
 ```python
 from datetime import timedelta
 import datetime
-
 ```
 
 
+
+우선 데이터형식을 datetime64에 맞게 변경해야한다
+
+
+
+```python
+data['시간']  = data['시간'].astype('datetime64')
+```
+
+
+
+datetime64 형식으로 변경했으면, 그 다음부턴 시간을 자유롭게 잘라서 쓰거나 비교할 수 있다.
+
+```python
+data['시간_월'] = data['시간'].apply(lambda x : x.month)
+data['시간_일'] = data['시간'].apply(lambda x : x.day)
+data['시간_시'] = data['시간'].apply(lambda x : x.hour)
+data['시간_분'] = data['시간'].apply(lambda x : x.minute)
+data['시간_초'] = data['시간'].apply(lambda x : x.second)
+```
 
 
 
