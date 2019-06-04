@@ -92,3 +92,21 @@ $$
 
 
 ###### A: 19 * 19 * ?
+
+
+
+
+
+
+
+##### Why do we learn a function d(img1, img2)*d*(*i**m**g*1,*i**m**g*2) for face verification? (Select all that apply.)
+
+
+
+##### Neural style transfer is trained as a supervised learning task in which the goal is to input two images (x*x*), and train a network to output a new, synthesized image (y*y*).
+
+
+
+
+
+##### In neural style transfer, what is updated in each iteration of the optimization algorithm?
