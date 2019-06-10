@@ -53,7 +53,7 @@ import datetime
 
 
 
-우선 데이터형식을 datetime64에 맞게 변경해야한다
+우선 데이터형식을 `datetime64`에 맞게 변경해야한다
 
 
 
@@ -71,6 +71,18 @@ data['시간_일'] = data['시간'].apply(lambda x : x.day)
 data['시간_시'] = data['시간'].apply(lambda x : x.hour)
 data['시간_분'] = data['시간'].apply(lambda x : x.minute)
 data['시간_초'] = data['시간'].apply(lambda x : x.second)
+```
+
+
+
+#### 요일 알아내기
+
+`datetime64`형식으로 바꾼 뒤, 간단하게 모두 확인할 수 있다.
+
+
+
+```python
+data['시간'].astype('datetime64').dt.day_name() #요일로 변경된값 return
 ```
 
 
