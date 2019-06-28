@@ -36,7 +36,7 @@ df['해당시간변수'] = df['해당시간변수'].apply(lambda x : pd.to_datet
 
 
 
-### datetime 형식에서 시간 연산하기
+### datetime64 형식에서 시간 연산하기
 
 시간형식의 데이터를 다뤄야할 때가 있다. 예를 들면 전체 데이터의 시간을 30분 전으로 수정한다던가
 
@@ -72,6 +72,10 @@ data['시간_시'] = data['시간'].apply(lambda x : x.hour)
 data['시간_분'] = data['시간'].apply(lambda x : x.minute)
 data['시간_초'] = data['시간'].apply(lambda x : x.second)
 ```
+
+
+
+datetime64형식으로 바뀐데이터의 각각 인스턴스는 `Timestamp`가 되어 서로간 시간계산이 편해진다.
 
 
 
