@@ -110,3 +110,77 @@ $$
 
 
 ##### In neural style transfer, what is updated in each iteration of the optimization algorithm?
+
+
+
+
+
+
+
+### 5. Sequence models
+
+
+
+##### Q: Let E*E* be an embedding matrix, and let o_{1234}*o*1234 be a one-hot vector corresponding to word 1234. Then to get the embedding of word 1234, why don’t we call E * o_{1234} in Python?
+
+
+
+- It is computationally wasteful.
+
+- The correct formula is E^T* o_{1234}*E**T*∗*o*1234.
+
+- This doesn’t handle unknown words (<UNK>).
+
+- None of the above: calling the Python snippet as described above is fine.
+
+
+
+
+
+
+
+
+
+
+
+###### A:  It is computationally wasteful.
+
+
+
+
+
+Q: Suppose you have a 10000 word vocabulary, and are learning 500-dimensional word embeddings. The word2vec model uses the following softmax function:
+
+
+$$
+P(t∣c) = {e_t^{θ^Te^c} \over ∑^{10000}_{t'=1}e^{θ_{t'}^Te_c}}
+$$
+
+
+Which of these statements are correct? Check all that apply.
+
+
+
+- *θ_t* and *e_c* are both 500 dimensional vectors.
+
+- *θ_t* and *e_c* are both 10000 dimensional vectors.
+
+- *θ_t* and *e_c* are both trained with an optimization algorithm such as Adam or gradient descent.
+
+- After training, we should expect *θ_t* to be very close to *e_c*  when *t* and *c* are the same word.
+
+
+
+  
+
+
+
+
+
+
+
+###### A : 
+
+###### 	θ_t* and *e_c* are both 500 dimensional vectors,
+
+###### 	θ_t* and *e_c* are both trained with an optimization algorithm such as Adam or gradient descent.
