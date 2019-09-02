@@ -55,34 +55,29 @@ python 을 설치했다.
 
 
 
-FP32 정밀도로 최적화 해보기로 했다.
+FP16 정밀도로 최적화 해보기로 했다.
 
 ![img](https://hiseon.me/wp-content/uploads/2018/03/tensorrt-1.png)
 
 
 
-우선, 그래프를 실행하는 함수를 정의하고, Frozen graph로 만드는 함수를 정의했다.
+우선,  케라스를 통해 학습한 모델을 불러와 frozen graph로 바꾸는 작업을 해야한다.
+
+frozen graph는 쉽게 생각해 급속냉동으로 그냥 그자체로 얼려버리는 행위를 생각하면된다.
+
+보통 모델을 저장할때 meta graph와 weights 들을 다 나누어 저장하고 함께 부르는 방식을 취하는데,
+
+frozen graph는 그래프 그대로 weights 와 함께 얼려버리는 것을 뜻한다.
 
 
 
 ```python
-def run_graph(gdef, dumm_inp):
-  """Run given graphdef once."""
-  gpu_options = cpb2.GPUOptions(per_process_gpu_memory_fraction=0.50)
-  ops.reset_default_graph()
-  g = ops.Graph()
-  with g.as_default():
-    inp, out = importer.import_graph_def(
-        graph_def=gdef, 
-        return_elements=["input_layer_name", "output_layer_name"]) 
-    	#변환하려는 케라스 모델의 input layer과 output layer의 이름을 알고 있어야 한다. ex) 			'lstm_12_input', 'dense_51/sigmoid' 
-    inp = inp.outputs[0]
-    out = out.outputs[0]
-  with csess.Session(
-      config=cpb2.ConfigProto(gpu_options=gpu_options), graph=g) as sess:
-    val = sess.run(out, {inp: dumm_inp})
-  return val
+# load keras model
+from kreas.models import load_model
+model = load_model('path/yourmodel.h5')
+```
 
+```python
 def freeze_session(session, keep_var_names=None, output_names=None, clear_devices=True):
     from tensorflow.python.framework.graph_util import convert_variables_to_constants
     graph = session.graph
@@ -98,62 +93,82 @@ def freeze_session(session, keep_var_names=None, output_names=None, clear_device
         return frozen_graph
 ```
 
+위 함수는 케라스 모델을 frozen graph 로 변경해주는 함수다.
 
 
-케라스로 만든 모델을 불러온 뒤, Frozen graph로 만들었다.
 
 ```python
-from keras.models import load_model
 from keras import backend as K
+#frozen_graph 형태로 만든뒤,
+frozen_graph = freeze_session(K.get_session(), output_names = [out.op.name for out in model.outputs]) 
 
-model = load_model('./my_model.h5')
-frozen_graph = freeze_session(K.get_session(), output_names = [out.op.name for out in model.outputs])
+#그래프를 그대로 저장한다
+tf.train.write_graph(frozen_graph, "./save_path/","model_name.pb", as_text=False )
 ```
 
 
 
-그리고  TensorRT 그래프로 변환작업을 시작하려는데..
+그래프로 저장한뒤엔, Tensor RT를 통해 본격적으로 변환할 수 있다.
+
+
 
 ```python
+import tensorflow as tf
+from tensorflow.python.compiler.tensorrt import trt_convert as trt
+import numpy as np
+import time
+with tf.Session() as sess:
+    # First deserialize your frozen graph, 얼려놨던 그래프를 불러와준다
+    with tf.gfile.GFile('./save_path/model_name.pb', 'rb') as f:
+        frozen_graph = tf.GraphDef()
+        frozen_graph.ParseFromString(f.read())
+        
+    # Now you can create a TensorRT inference graph from your
+    # frozen graph:
+    converter = trt.TrtGraphConverter(
+	    input_graph_def=frozen_graph,
+	    nodes_blacklist=['dense_3/Sigmoid:0'], 
+        ### 중요 :  반드시 마지막노드와 인덱스를 함께 입력해줘야 한다.
+        precision_mode='FP16', #FP16으로 입력
+        use_calibration=True) #output nodes
+    trt_graph = converter.convert()
 
-inp_dims = (10000, 11, 198)
-dummy_input = np.random.random_sample(inp_dims) #input shape에 맞게 dummy data만들고
-
-orig_graph = frozen_graph
-
-int8_calib_gdef = trt.create_inference_graph(
-  input_graph_def=orig_graph,
-  outputs=["dense_51/Sigmoid"], #output layer name 을 입력해준다.
-  max_batch_size=inp_dims[0],
-  max_workspace_size_bytes=1 << 20,
-  precision_mode="FP32",  # TRT Engine precision "FP32","FP16" or "INT8"
-  minimum_segment_size=2  # minimum number of nodes in an engine
-)
-
-# int8_calib_gdef = trt.create_inference_graph(
-#     input_saved_model_dir = './KTT_Data/models/tf_autoencoder/saved_model.pb',
-#     output_saved_model_dir = './KTT_Data/models/tf_autoencoder_output')
-
-
-o1 = run_graph(orig_graph, dummy_input)
-_ = run_calibration(int8_calib_gdef, dummy_input)
-
-int8_graph = trt.calib_graph_to_infer_graph(int8_calib_gdef)
-
-
-start = time.time()
-o1 = run_graph(orig_graph, dummy_input)
-print('first : original : ',time.time() - start)
-start = time.time()
-
-o2 = run_graph(int8_calib_gdef, dummy_input)
-# o2 = run_graph(int8_graph, dummy_input)
-print('second : transformed : ',time.time()- start)
-print( np.array_equal(o1, o2))
+    output_node = tf.import_graph_def(
+    trt_graph,
+    return_elements=["dense_3/Sigmoid:0"]) #위의 nodes_blacklist에 적었던 노드 고대로 적기
+    start = time.time()
+    yhat = sess.run(output_node, 
+                    feed_dict={'import/lstm_1_input:0' : np.zeros((100000,11,192))})
+    print(time.time() - start)
+    print(yhat)
 ```
 
 
 
+TensorRT에서 가장중요한건 변환할 모델의 연산과 노드를 정확히 알고 있어야한다는 점이다.
 
+특히 `nodes_blacklist=[]`에선 반드시 마지막 연산과 인덱스를 함께 붙여줘야한다.
+
+나의 경우엔 마지막 연산이 세번째 히든노드에 Sigmoid를 activation 하는 것이기 때문에
+
+'dense_3/Sigmoid:0' 으로 입력했다. 뒤의 `:0`은 operation index 다(대부분 :0 임)
+
+
+
+그리고 마지막 sess.run 부분에서 feed_dict에 입력할 노드 역시 주의깊게 봐야한다
+
+케라스에서 frozen graph로 변경할때 노드별로 'import/' 라는 전치사가 붙는걸로 알고있는데
+
+때문에 여기서 입력노드의 이름은 'lstm_1_input:0' 이 아닌 `import/lstm_1_input:0`이 되는것이다.
+
+
+
+기존 케라스 모델과 시간 비교를 했을때 INT8이 아님에도 불구하고 약 1/4 정도 빨라진것을 확인했다.
+
+
+
+
+
+ 
 
 https://hiseon.me/data-analytics/tensorflow/tensorflow-tensorrt/
