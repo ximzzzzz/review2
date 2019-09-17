@@ -93,3 +93,14 @@ data['datetime_column'].apply(lambda x : datetime.strftime(x, '%Y'))
 
 ```
 
+
+
+### 6. Timestamp 와 Timedelta를 활용한 연산
+
+​	5일 전 날짜를 확인하고 싶을때!
+
+```python
+time = pd.Timestamp('2019-09-17')
+time_5days_ago = time - pd.Timedelta('5D')
+```
+
