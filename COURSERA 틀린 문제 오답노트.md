@@ -184,3 +184,61 @@ Which of these statements are correct? Check all that apply.
 ###### 	θ_t* and *e_c* are both 500 dimensional vectors,
 
 ###### 	θ_t* and *e_c* are both trained with an optimization algorithm such as Adam or gradient descent.
+
+
+
+
+
+
+
+##### Q: Consider using this encoder-decoder model for machine translation
+
+![img](https://d3c33hcgiwev3.cloudfront.net/imageAssetProxy.v1/qXy2GwVdEeirxApwydYI3g_563d74fd24e481f841070e81da7ee0aa_Screen-Shot-2018-01-29-at-5.33.03-PM.png?expiry=1568937600000&hmac=Lf2b60d0TcMxH3BGuGGDgxXX9RkfXMoqZF9xK9GfLFM)
+
+##### This model is a “conditional language model” in the sense that the encoder portion (shown in green) is modeling the probability of the input sentence $$x$$
+
+(True/False)
+
+
+
+
+
+
+
+
+
+###### A : False (encoder의 모든 정보가 반영되어 decoder로 전달되는 것일 뿐 확률이 정해지진 않는다)
+
+
+
+##### Q: In machine translation, if we carry out beam search without using sentence normalization,
+
+##### the algorithm will tend to output overly short translations.
+
+(True/False)
+
+
+
+
+
+###### A : True
+
+
+
+##### Q: In trigger word detection, $$x^{<t>}$$ is : 
+
+- Features of the audio (such as spectrogram features) at time $$t$$.
+
+- The $$t$$-th input word, represented as either a one-hot vector or a word embedding.
+
+- Whether the trigger word is being said at time $$t$$.
+
+- Whether someone has just finished saying the trigger word at time $$t$$
+
+
+
+
+
+
+
+###### A : Features of the audio (such as spectrogram features) at time $$t$$.
