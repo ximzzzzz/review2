@@ -101,6 +101,10 @@ data['datetime_column'].apply(lambda x : datetime.strftime(x, '%Y'))
 
 ```python
 time = pd.Timestamp('2019-09-17')
+time = pd.to_datetime('2019-12-19') # 위와 같은 Timestamp 데이터 생성
 time_5days_ago = time - pd.Timedelta('5D')
 ```
 
+
+
+### 
