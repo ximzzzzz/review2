@@ -39,7 +39,7 @@ n_outputs = train_y.shape[1]
 
 input_layer = Input(shape=(n_timesteps, n_features))
 cnn_layer = Conv1D(filters , kernel_size, padding='same', activation='relu')(input_layer)
-cnn_layer = Conv1D(filters , kernel_size, padding='same', activation='relu')(input_layer)
+cnn_layer = Conv1D(filters , kernel_size, padding='same', activation='relu')(cnn_layer)
 cnn_layer = MaxPooling1D(pool_size=2)(cnn_layer)
 cnn_layer = Flatten()(cnn_layer)
 cnn_layer = Dense(32, activation='relu')(cnn_layer)
