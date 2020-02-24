@@ -10,3 +10,10 @@
 
 ​	tf. unstack
 
+
+
+​	tf.boolean_mask
+
+
+
+​	tf.gather
