@@ -63,8 +63,6 @@ FP16 정밀도로 최적화 해보기로 했다.
 
 우선,  케라스를 통해 학습한 모델을 불러와 frozen graph로 바꾸는 작업을 해야한다.
 
-frozen graph는 쉽게 생각해 급속냉동으로 그냥 그자체로 얼려버리는 행위를 생각하면된다.
-
 보통 모델을 저장할때 meta graph와 weights 들을 다 나누어 저장하고 함께 부르는 방식을 취하는데,
 
 frozen graph는 그래프 그대로 weights 와 함께 얼려버리는 것을 뜻한다.
@@ -73,7 +71,7 @@ frozen graph는 그래프 그대로 weights 와 함께 얼려버리는 것을 �
 
 ```python
 # load keras model
-from kreas.models import load_model
+from keras.models import load_model
 model = load_model('path/yourmodel.h5')
 ```
 
@@ -142,6 +140,41 @@ with tf.Session() as sess:
     print(time.time() - start)
     print(yhat)
 ```
+
+한번 그래프를 구축했다면 계속 사용하면서 추론 시간을 재볼 수 있다.
+
+```python
+sess = tf.Session()
+with tf.gfile.GFile('./models/test_tf.pb', 'rb') as f:
+        frozen_graph = tf.GraphDef()
+        frozen_graph.ParseFromString(f.read())
+        
+# Now you can create a TensorRT inference graph from your
+# frozen graph:
+converter = trt.TrtGraphConverter(input_graph_def=frozen_graph,
+    nodes_blacklist=['batch_normalization_27_1/concat:0'], 
+    ### 중요 :  반드시 마지막노드와 인덱스를 함께 입력해줘야 한다.
+    precision_mode='FP16', #FP16으로 입력
+    use_calibration=True) #output nodes
+trt_graph = converter.convert()
+
+output_node = tf.import_graph_def(trt_graph, return_elements=["batch_normalization_27_1/concat:0"])
+#output node 만들기 완료
+```
+
+
+
+```python
+# 이 셀만 돌리면서 순수 연산시간이 얼마나 줄었는지 확인할 수 있다.
+start = time.time()
+yhat = sess.run(output_node, 
+                feed_dict={'import/lstm_1_input:0' : np.zeros((100000,11,192))})
+print(time.time() - start)
+print(yhat)
+
+```
+
+
 
 
 
