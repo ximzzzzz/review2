@@ -10,12 +10,24 @@
 
 
 
-##### contiguious 한 텐서는 storage 상에서 점핑? 없이 순서대로 참조하기때문에 메모리 접근 성능을 향상시킨다.
+- contiguious 한 텐서는 storage 상에서 점핑? 없이 순서대로 참조하기때문에 메모리 접근 성능을 향상시킨다.
 
-```python
-tensor_c = tensor.contiguous()
-tensor_c.is_contiguous() #True
-```
+  ```python
+  tensor_c = tensor.contiguous()
+  tensor_c.is_contiguous() #True
+  ```
 
 
 
+- torch 연산중 `연산명_` 형식으로 되어있는 메소드는 inplace 역할을 한다.
+
+  ```python
+  # img 변수를 이미지 파일을 로드한 텐서라고 가정할 경우,
+  img.sub_(0.5) #이미지 전체 텐서에 0.5를 뺀다
+  img.div_(0.5) #전체 텐서에 0.5를 나눈다
+  imb.sub_(0.5).div_(0.5) #0.5를 빼고 다시 0.5로 나눈다. Nonetype error 뜨지않음! 
+  ```
+
+  
+
+  
