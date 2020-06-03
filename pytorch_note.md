@@ -52,4 +52,13 @@
           [0., 0., 0., 0., 0., 0., 1., 0., 0., 0.]])
   ```
 
+
+
+
+- torch.no_grad() : 학습을 하지 않을때(추론시) autograd 기능을 끈채로 forward 연산을 진행하는걸 말한다
+
+  > torch.no_grad() impacts the autograd engine and deactivate it. It will reduce memory usage and speed up computations but you won’t be able to backprop (which you don’t want in an eval script).
+  >
+  > with torch.no_grad() temporarily set all the requires_grad flag to false.
+
   
