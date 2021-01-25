@@ -41,13 +41,20 @@
 path($$\pi$$) 는 중복과 blank를 지웠을때 z가 될 수 있는 모든 경로들을 말한다.
 
 CTC 기법에선 각 time step이 조건부 독립을 가정하기 때문에 각각의 path는 time step 별 확률의 곱으로 표현할 수 있다.
+
+<수식1>
 $$
 p\left( \pi |\mathbf{x} \right) =\prod _{ t=1 }^{ T }{ { y }_{ { \pi  }_{ t } }^{ t } }
 $$
+
+
 그리고 `p(z|x)` 확률은 path의 확률을 더하면 된다.
+
+<수식2>
 $$
 p( \mathbf{l} | \mathbf{x} )=\sum _{ \pi \in { \cal{B}  }^{ -1 } \left( \mathbf{l} \right) }^{  }{ p\left( \pi | \mathbf{x} \right)  }
 $$
+
 
 
 말이 쉽지 time step이 길어질수록 가능한 path는 폭증하기 때문에 일일히 적용하기는 불가능해보인다.
@@ -56,6 +63,35 @@ $$
 
 재귀적으로 이전 계산을 활용하기때문에 가능하게 된다.
 
+여기서 주의할점이 있는데, <수식2>를 구하기 위해 forward algorithm, backward algorithm 을 사용할때 기존 `l` 에
+
+앞, 뒤 그리고 문자 사이에 blank를 추가한 `l'`로 바꾼다는 것이다. 예를들어  `l` = `dog` 일 경우 `l' = _d_o_g_` 가 된다.
+
+많은 CTC 설명글에서 forward algorithm 을 설명할때 아래 수식3을 보여주는데 이건  `l <- l'` 로 정의했을 때 설명이 된다.
+
+예를 들어 `l ` = dog 일때,  $$l_{1:2}$$ 에 해당하는 (여기선 'do'가 되겠다)  $$\alpha_3(2)$$를 구할경우, 가능한 time step 3를 통해 가능한
+
+path는 `_do` ,`d_o` ,`do_` 3가지가 있다. 하지만 이 3 path를  아래 수식4에 적용할수가 없기때문에
+
+결국 forward/backward algorithm 을 위해서 `l'`로 변환은 필수적이라 할 수 있다.
+
+<수식3> 
+$$
+{ \alpha  }_{ t }\left( s \right) =\sum _{ \pi \in { N }^{ T }: \cal{B} \left( { \pi  }_{ 1:t } \right) ={ \mathbf{l} }_{ 1:s } }^{  }{ \prod _{ t'=1 }^{ t }{ { y }_{ { \pi  }_{ t' } }^{ t' } }  }
+$$
+
+
+<수식4>
+$$
+\require{ams}
+\begin{equation*}
+    { \alpha  }_{ t }\left( s \right) =
+    \begin{cases}
+      \left\{ { \alpha  }_{ t-1 }\left( s \right) +{ \alpha  }_{ t-1 }\left( s-1 \right)  \right\} { y }_{ { \mathbf{l}' }_{ s } }^{ t }, & \text{if}\ { \mathbf{l}' }_{ s }=b \text{ or } { \mathbf{l}' }_{ s - 2 }={ \mathbf{l}' }_{ s }\\
+      \left\{ { \alpha  }_{ t-1 }\left( s \right) +{ \alpha  }_{ t-1 }\left( s-1 \right) +{ \alpha  }_{ t-1 }\left( s-2 \right)  \right\} { y }_{ { \mathbf{l}' }_{ s } }^{ t }, & \text{otherwise}
+    \end{cases}
+\end{equation*}
+$$
 
 
 ## Decoding
@@ -116,7 +152,7 @@ $$
    
    
    
-   The non-blank probability: blank probability와 반대의 개념이다. 변수 $$P_nb$$로 표현하며 해당시점에 해당 prefix를 가질수있는 모든 path중에 마지막이 `blank`로 끝나지 않는 path들의 확률합이다. 예를들어 $$P_nb$$`[3]['b']` 의 path는 `--b`, `-bb`, `bbb`  3가지가 있으므로 확률의 합을 통해 구할 수 있다.
+   The non-blank probability: blank probability와 반대의 개념이다. 변수 $$P_{nb}$$로 표현하며 해당시점에 해당 prefix를 가질수있는 모든 path중에 마지막이 `blank`로 끝나지 않는 path들의 확률합이다. 예를들어 $$P_{nb}$$`[3]['b']` 의 path는 `--b`, `-bb`, `bbb`  3가지가 있으므로 확률의 합을 통해 구할 수 있다.
    
    
    
@@ -192,6 +228,8 @@ $$
    
    
    
+   
+   
    ```python
    				# STEP 4: Extending with the end character
    				else:
@@ -204,15 +242,69 @@ $$
    
    #1  pruned_alphabet이`blank`가 아닐경우 기존 prefix에 c를 덧붙여 확률을 구해본다.
    
-    #2 c가 l[-1]과 같다는것은 결국 중복된 레이블을 예측했다는건데 (e.g. 기존 prefix  '-h' 에  'h' 를 추가하려할 경우 ) 
+   #2 c가 l[-1]과 같다는것은 결국 중복된 레이블을 예측했다는건데 (e.g. 기존 prefix  '-h' 에  'h' 를 추가하려할 경우 ) 
    
    이땐  중복된 레이블을 지우지 않고 포함시킨 확률과 중복된 레이블을 제거한 확률 두가지 경우의 수로 계산한다. 예를들어 `happy` 의 경우 중복된 레이블을 지우면 항상 hapy가 되기때문에 두가지 경우의 수를 고려한다.
    
    
    
-   내가 이거마무리하고만다 
    
    
+   ```python
+   					# STEP 5: Extending with any other non-blank character and LM constraints
+   					elif len(l.replace(' ', '')) > 0 and c in (' ', '>'): 	#1
+   						lm_prob = lm(l_plus.strip(' >')) ** alpha
+   						Pnb[t][l_plus] += lm_prob * ctc[t][c_ix] * (Pb[t - 1][l] + Pnb[t - 1][l])
+   					else:	#2
+   						Pnb[t][l_plus] += ctc[t][c_ix] * (Pb[t - 1][l] + Pnb[t - 1][l])
+   					# END: STEP 5
+   ```
+   
+   #1  `c`가 ' ' 이거나 ' > ' 일 경우 음절이거나 발화의 끝을 가정한것이므로 Language model을 통해 `l_plus`의 확률을 확인해본다.
+   
+   그 후 language model의 확률을 weighting 해준다.
+   
+   #2  step3,4, 그리고 step 5의 ' ', '>' 가 모두 아닐 경우 Language model  weight 없이 l_plus의 확률을 계산한다.
+   
+   
+   
+   
+   
+   ```python
+   					# STEP 6: Make use of discarded prefixes
+   					if l_plus not in A_prev:
+   						Pb[t][l_plus] += ctc[t][-1] * (Pb[t - 1][l_plus] + Pnb[t - 1][l_plus]) #1
+   						Pnb[t][l_plus] += ctc[t][c_ix] * Pnb[t - 1][l_plus] #2
+   					# END: STEP 6
+   ```
+   
+   마지막으로 l_plus의 pb, pnb 가 나올 확률을 추가로 구한뒤 더해준다.
+   
+   Pb는 이번 time step에 blank 가 나왔다는 얘기므로, blank의 확률인 `ctc[t][-1]` 에 이전 step에서 l_plus가 나왔을 확률을 곱해준다.
+   
+   Pnb는 이번 time step에 c가 나왔다는 얘기므로, `ctc[t][c]` 확률에 이전 step에서 l_plus가 나왔을 확률을 곱해준다.
+   
+   
+   
+    ```python
+   		# STEP 7: Select most probable prefixes
+   		A_next = Pb[t] + Pnb[t] #1
+   		sorter = lambda l: A_next[l] * (len(W(l)) + 1) ** beta
+   		A_prev = sorted(A_next, key=sorter, reverse=True)[:k]  #2
+   		# END: STEP 7
+    ```
+   
+   
+   
+   #1 A_prev 항목에 모든 원소들에 pruned_alphabet 을 적용시켜보며 확률을 구한다.
+   
+   #2 Pb[t] + Pnb[t] 를 더해 예측 label 별 전체 확률을 구한다. 높은 확률 순으로 정렬한뒤  
+   
+   ​	beam search hyperparameter에 해당하는  상위 k개의 label들만 A_prev로 취한다.
+   
+   
+   
+   마지막으로 위 과정을 T스텝동안 반복한다.
    
    
    
